@@ -1,9 +1,5 @@
 """
-lfpgen Streamlit app -- SELF-CONTAINED, single-file version.
-
-This file has ZERO dependency on any other file in your repo (no `lfpgen`
-package folder needed). Just drop this .py file into your repo root next to
-a requirements.txt containing:
+lfpgen Streamlit app --
 
     brian2>=2.5
     numpy>=1.22
@@ -11,12 +7,9 @@ a requirements.txt containing:
     streamlit>=1.30
     pandas
 
-...and point Streamlit Cloud at this file. That's it.
-
 It contains the same biophysically-grounded LFP method as the full lfpgen
 package (LIF E/I network in Brian2 -> Mazzoni et al. 2015 AMPA/GABA
-current-summation LFP proxy on a virtual linear probe), just inlined so
-there's no import path to break.
+current-summation LFP proxy on a virtual linear probe)
 
 Run locally:
     pip install brian2 numpy scipy streamlit pandas
@@ -28,14 +21,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-# --- Work around a Brian2 / Streamlit threading clash -----------------------
-# Brian2's __init__.py calls signal.signal(signal.SIGINT, ...) at import time
-# to install a Ctrl-C handler. signal.signal() only works when called from
-# the main thread of the main interpreter -- but Streamlit runs the app
-# script in a worker thread, so this raises:
-#   ValueError: signal only works in main thread of the main interpreter
-# We temporarily patch signal.signal to swallow that specific error for the
-# duration of the brian2 import, then restore the real signal.signal.
+
 import signal as _signal
 
 _real_signal = _signal.signal
@@ -45,13 +31,13 @@ def _thread_safe_signal(sig, handler):
     try:
         return _real_signal(sig, handler)
     except ValueError:
-        return None  # not in the main thread; skip installing the handler
+        return None  
 
 
 _signal.signal = _thread_safe_signal
 try:
     import brian2 as b2
-    b2.prefs.codegen.target = "numpy"  # portable; no C++ compiler needed on cloud
+    b2.prefs.codegen.target = "numpy"  
     _BRIAN2_OK = True
 except ImportError:
     _BRIAN2_OK = False
@@ -76,7 +62,7 @@ if not _BRIAN2_OK:
 
 
 # ============================================================================
-# Core simulation + LFP-proxy logic (inlined from the lfpgen package)
+# Core simulation + LFP-proxy logic 
 # ============================================================================
 
 def run_network(n_exc, n_inh, duration_ms, seed, p_connect=0.02, dt_ms=0.1,
