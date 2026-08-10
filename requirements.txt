@@ -1,7 +1,4 @@
-# Streamlit Community Cloud (and any `pip install -r requirements.txt` flow)
-# runs this file to set up the environment. The first line installs THIS
-# repo itself in editable mode so `import lfpgen` works -- without it,
-# Streamlit Cloud only sees brian2/numpy/scipy/etc, not your own package.
+
 -e .
 streamlit>=1.30
 pandas
