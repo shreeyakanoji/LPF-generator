@@ -11,9 +11,6 @@ It contains the same biophysically-grounded LFP method as the full lfpgen
 package (LIF E/I network in Brian2 -> Mazzoni et al. 2015 AMPA/GABA
 current-summation LFP proxy on a virtual linear probe)
 
-Run locally:
-    pip install brian2 numpy scipy streamlit pandas
-    streamlit run streamlit_app.py
 """
 
 import io
